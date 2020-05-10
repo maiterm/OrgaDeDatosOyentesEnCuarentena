@@ -1,0 +1,129 @@
+sample_submission
+         id  target
+3258  10861       0
+3259  10865       0
+3260  10868       0
+3261  10874       0
+3262  10875       0
+test
+         id keyword location  \
+3258  10861     NaN      NaN   
+3259  10865     NaN      NaN   
+3260  10868     NaN      NaN   
+3261  10874     NaN      NaN   
+3262  10875     NaN      NaN   
+
+                                                   text  
+3258  EARTHQUAKE SAFETY LOS ANGELES ÛÒ SAFETY FASTE...  
+3259  Storm in RI worse than last hurricane. My city...  
+3260  Green Line derailment in Chicago http://t.co/U...  
+3261  MEG issues Hazardous Weather Outlook (HWO) htt...  
+3262  #CityofCalgary has activated its Municipal Eme...  
+Test amount of rows 3263
+train
+         id keyword location  \
+7608  10869     NaN      NaN   
+7609  10870     NaN      NaN   
+7610  10871     NaN      NaN   
+7611  10872     NaN      NaN   
+7612  10873     NaN      NaN   
+
+                                                   text  target  
+7608  Two giant cranes holding a bridge collapse int...       1  
+7609  @aria_ahrary @TheTawniest The out of control w...       1  
+7610  M1.94 [01:04 UTC]?5km S of Volcano Hawaii. htt...       1  
+7611  Police investigating after an e-bike collided ...       1  
+7612  The Latest: More Homes Razed by Northern Calif...       1  
+Train amount of rows 7613
+test locations
+[nan 'London' "Niall's place | SAF 12 SQUAD |" ...
+ 'Acey mountain islanddåÇTorontoåÈ' 'los angeles' 'Brussels, Belgium']
+len test unique locations 1603
+len test location == Nan 1105
+train locations
+[nan 'Birmingham' 'Est. September 2012 - Bristol' ... 'Vancouver, Canada'
+ 'London ' 'Lincoln']
+len train unique locations 3342
+len train location == Nan 2533
+test keywords
+[nan 'ablaze' 'accident' 'aftershock' 'airplane%20accident' 'ambulance'
+ 'annihilated' 'annihilation' 'apocalypse' 'armageddon' 'army' 'arson'
+ 'arsonist' 'attack' 'attacked' 'avalanche' 'battle' 'bioterror'
+ 'bioterrorism' 'blaze' 'blazing' 'bleeding' 'blew%20up' 'blight'
+ 'blizzard' 'blood' 'bloody' 'blown%20up' 'body%20bag' 'body%20bagging'
+ 'body%20bags' 'bomb' 'bombed' 'bombing' 'bridge%20collapse'
+ 'buildings%20burning' 'buildings%20on%20fire' 'burned' 'burning'
+ 'burning%20buildings' 'bush%20fires' 'casualties' 'casualty'
+ 'catastrophe' 'catastrophic' 'chemical%20emergency' 'cliff%20fall'
+ 'collapse' 'collapsed' 'collide' 'collided' 'collision' 'crash' 'crashed'
+ 'crush' 'crushed' 'curfew' 'cyclone' 'damage' 'danger' 'dead' 'death'
+ 'deaths' 'debris' 'deluge' 'deluged' 'demolish' 'demolished' 'demolition'
+ 'derail' 'derailed' 'derailment' 'desolate' 'desolation' 'destroy'
+ 'destroyed' 'destruction' 'detonate' 'detonation' 'devastated'
+ 'devastation' 'disaster' 'displaced' 'drought' 'drown' 'drowned'
+ 'drowning' 'dust%20storm' 'earthquake' 'electrocute' 'electrocuted'
+ 'emergency' 'emergency%20plan' 'emergency%20services' 'engulfed'
+ 'epicentre' 'evacuate' 'evacuated' 'evacuation' 'explode' 'exploded'
+ 'explosion' 'eyewitness' 'famine' 'fatal' 'fatalities' 'fatality' 'fear'
+ 'fire' 'fire%20truck' 'first%20responders' 'flames' 'flattened' 'flood'
+ 'flooding' 'floods' 'forest%20fire' 'forest%20fires' 'hail' 'hailstorm'
+ 'harm' 'hazard' 'hazardous' 'heat%20wave' 'hellfire' 'hijack' 'hijacker'
+ 'hijacking' 'hostage' 'hostages' 'hurricane' 'injured' 'injuries'
+ 'injury' 'inundated' 'inundation' 'landslide' 'lava' 'lightning'
+ 'loud%20bang' 'mass%20murder' 'mass%20murderer' 'massacre' 'mayhem'
+ 'meltdown' 'military' 'mudslide' 'natural%20disaster'
+ 'nuclear%20disaster' 'nuclear%20reactor' 'obliterate' 'obliterated'
+ 'obliteration' 'oil%20spill' 'outbreak' 'pandemonium' 'panic' 'panicking'
+ 'police' 'quarantine' 'quarantined' 'radiation%20emergency' 'rainstorm'
+ 'razed' 'refugees' 'rescue' 'rescued' 'rescuers' 'riot' 'rioting'
+ 'rubble' 'ruin' 'sandstorm' 'screamed' 'screaming' 'screams' 'seismic'
+ 'sinkhole' 'sinking' 'siren' 'sirens' 'smoke' 'snowstorm' 'storm'
+ 'stretcher' 'structural%20failure' 'suicide%20bomb' 'suicide%20bomber'
+ 'suicide%20bombing' 'sunk' 'survive' 'survived' 'survivors' 'terrorism'
+ 'terrorist' 'threat' 'thunder' 'thunderstorm' 'tornado' 'tragedy'
+ 'trapped' 'trauma' 'traumatised' 'trouble' 'tsunami' 'twister' 'typhoon'
+ 'upheaval' 'violent%20storm' 'volcano' 'war%20zone' 'weapon' 'weapons'
+ 'whirlwind' 'wild%20fires' 'wildfire' 'windstorm' 'wounded' 'wounds'
+ 'wreck' 'wreckage' 'wrecked']
+len test unique keywords 222
+train keywords
+[nan 'ablaze' 'accident' 'aftershock' 'airplane%20accident' 'ambulance'
+ 'annihilated' 'annihilation' 'apocalypse' 'armageddon' 'army' 'arson'
+ 'arsonist' 'attack' 'attacked' 'avalanche' 'battle' 'bioterror'
+ 'bioterrorism' 'blaze' 'blazing' 'bleeding' 'blew%20up' 'blight'
+ 'blizzard' 'blood' 'bloody' 'blown%20up' 'body%20bag' 'body%20bagging'
+ 'body%20bags' 'bomb' 'bombed' 'bombing' 'bridge%20collapse'
+ 'buildings%20burning' 'buildings%20on%20fire' 'burned' 'burning'
+ 'burning%20buildings' 'bush%20fires' 'casualties' 'casualty'
+ 'catastrophe' 'catastrophic' 'chemical%20emergency' 'cliff%20fall'
+ 'collapse' 'collapsed' 'collide' 'collided' 'collision' 'crash' 'crashed'
+ 'crush' 'crushed' 'curfew' 'cyclone' 'damage' 'danger' 'dead' 'death'
+ 'deaths' 'debris' 'deluge' 'deluged' 'demolish' 'demolished' 'demolition'
+ 'derail' 'derailed' 'derailment' 'desolate' 'desolation' 'destroy'
+ 'destroyed' 'destruction' 'detonate' 'detonation' 'devastated'
+ 'devastation' 'disaster' 'displaced' 'drought' 'drown' 'drowned'
+ 'drowning' 'dust%20storm' 'earthquake' 'electrocute' 'electrocuted'
+ 'emergency' 'emergency%20plan' 'emergency%20services' 'engulfed'
+ 'epicentre' 'evacuate' 'evacuated' 'evacuation' 'explode' 'exploded'
+ 'explosion' 'eyewitness' 'famine' 'fatal' 'fatalities' 'fatality' 'fear'
+ 'fire' 'fire%20truck' 'first%20responders' 'flames' 'flattened' 'flood'
+ 'flooding' 'floods' 'forest%20fire' 'forest%20fires' 'hail' 'hailstorm'
+ 'harm' 'hazard' 'hazardous' 'heat%20wave' 'hellfire' 'hijack' 'hijacker'
+ 'hijacking' 'hostage' 'hostages' 'hurricane' 'injured' 'injuries'
+ 'injury' 'inundated' 'inundation' 'landslide' 'lava' 'lightning'
+ 'loud%20bang' 'mass%20murder' 'mass%20murderer' 'massacre' 'mayhem'
+ 'meltdown' 'military' 'mudslide' 'natural%20disaster'
+ 'nuclear%20disaster' 'nuclear%20reactor' 'obliterate' 'obliterated'
+ 'obliteration' 'oil%20spill' 'outbreak' 'pandemonium' 'panic' 'panicking'
+ 'police' 'quarantine' 'quarantined' 'radiation%20emergency' 'rainstorm'
+ 'razed' 'refugees' 'rescue' 'rescued' 'rescuers' 'riot' 'rioting'
+ 'rubble' 'ruin' 'sandstorm' 'screamed' 'screaming' 'screams' 'seismic'
+ 'sinkhole' 'sinking' 'siren' 'sirens' 'smoke' 'snowstorm' 'storm'
+ 'stretcher' 'structural%20failure' 'suicide%20bomb' 'suicide%20bomber'
+ 'suicide%20bombing' 'sunk' 'survive' 'survived' 'survivors' 'terrorism'
+ 'terrorist' 'threat' 'thunder' 'thunderstorm' 'tornado' 'tragedy'
+ 'trapped' 'trauma' 'traumatised' 'trouble' 'tsunami' 'twister' 'typhoon'
+ 'upheaval' 'violent%20storm' 'volcano' 'war%20zone' 'weapon' 'weapons'
+ 'whirlwind' 'wild%20fires' 'wildfire' 'windstorm' 'wounded' 'wounds'
+ 'wreck' 'wreckage' 'wrecked']
+len train unique keywords 222
