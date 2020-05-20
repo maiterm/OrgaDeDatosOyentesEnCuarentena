@@ -1,0 +1,6 @@
+Location not null
+5080
+location2 of 3 words
+(237,)
+less than 3  words
+(3855,)
