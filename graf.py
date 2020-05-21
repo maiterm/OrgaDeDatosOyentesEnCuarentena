@@ -149,23 +149,24 @@ def plotmissing(train):
     plt.savefig('missing.png')
 
 def amountquestion(train):
-    #para acomodar
+    
     train['question'] = train['text'].apply(lambda x: len(str(x).split("?"))-1 )
-    questions=train.loc[:,["target","question"]]
-    questions["value"]=[1]*len(questions["target"])
-    questions=questions.groupby(["question","target"]).agg("count")
-    #value of 0 amount of ? can be deleted because it is out of range
+    # questions=train.loc[:,["target","question"]]
+    # print(questions.unique())
+    # questions["value"]=[1]*len(questions["target"])
+    # questions=questions.groupby(["question","target"]).agg("count")
     colors = ["deepskyblue", "red"]
     fig, ax = plt.subplots()
-    questions.plot(kind='bar',figsize=(10,8),rot=25, color=colors)
-    plt.title('Amount of "?" in each tweet ',fontsize=12,fontweight='bold')
-    #ax = sns.barplot(x=questions["value"], y=questions_get_group("question"), hue=questions_get_group("target") , orient='h')
-    #ax = sns.boxplot(x="target", y="question", 
-                        #data=questions, palette=colors)
-
-    ax.set_xticklabels(["Not Real Disaster","Real Disaster"])
-    ax.set_ylabel('Amount of "?" in each tweet')
-    ax.set_xlabel("Aoumnt of time of that amount of ?")
+    verdaderos = train.loc[(train['target'] == 1)&(train["question"]!=0)]
+    falsos = train.loc[(train['target'] == 0)&(train["question"]!=0)]
+    # tweets.['lenght'].plot.hist(color='blue', figsize=(12, 4), bins=100)
+    verdaderos['question'].plot.hist(color=colors[1], figsize=(12, 8), bins=50,alpha=1,label="Real Disaster")
+    falsos['question'].plot.hist(color=colors[0], figsize=(12, 8), bins=50, alpha=0.5,label="Not Real Disaster")
+    plt.title('Amount of tweets with number of "?"',fontsize=12,fontweight='bold')
+    plt.legend()
+    #ax.set_ylim(0,30)
+    ax.set_ylabel('Amount of tweets')
+    ax.set_xlabel("Aoumnt ? in ech tweet")
     plt.savefig('questions.png')
 
 def plotPersonalWords(train):
@@ -193,4 +194,44 @@ def plotNotPersonalWords(train):
     ax.set_ylabel("")
     plt.savefig("pieNoPersonal.png")
 
-plotNotPersonalWords(train)
+def plotTarget(train):
+    fig,ax=plt.subplots()
+    target=train["target"].value_counts()
+    ax=target.plot.pie(figsize=(6, 6), colors=['lightblue', 'crimson'],\
+        fontsize=9, autopct='%.2f',labels=["Unreal Desaster","Real Desaster"])
+    ax.set_title("Tweets target", fontsize=12)
+    ax.set_ylabel("")
+    plt.savefig("pietarget.png")
+
+def containskeyword(train):
+    for word in train.loc[train["keyword"].notnull(),"keyword"].unique():
+        bool_keyword=train["text"].str.contains(word,flags=re.I,na=False)
+        bool_keyword_=(bool_keyword) & (train["keyword"]== word)
+        train.loc[bool_keyword_,"keyword-text"]="Contain"
+        bool_keyword_=False
+        bool_keyword=False
+
+    target_contain=train.loc[train["keyword-text"]=="Contain","target"].value_counts()
+    fig,ax=plt.subplots()
+    ax=target_contain.plot.pie(figsize=(6, 6), colors=['lightblue', 'crimson'],\
+        fontsize=8.75, autopct='%.2f',labels=["Unreal Desaster","Real Desaster"])
+    ax.set_title("Tweets that contains their keyword", fontsize=12)
+    ax.set_ylabel("")
+    plt.savefig("pieContain.png")
+
+def numberQueote(train):
+    
+    train['quote'] = train['text'].apply(lambda x: len(str(x).split("@"))-1 )
+    colors = ["deepskyblue", "red"]
+    fig, ax = plt.subplots()
+    truth = train.loc[(train['target'] == 1)&(train["quote"]!=0)]
+    fake = train.loc[(train['target'] == 0) & (train["quote"]!=0)]
+    fake['quote'].plot.hist(color=colors[0], figsize=(12, 8), bins=8,alpha=0.5,label="Not Real Disaster")
+    truth['quote'].plot.hist(color=colors[1], figsize=(12, 8), bins=5,alpha=0.6,label="Real Disaster")
+    plt.title('Amount of tweets with number of "@"',fontsize=12,fontweight='bold')
+    plt.legend()
+    ax.set_ylabel('Amount of tweets')
+    ax.set_xlabel("Aoumnt @ in each tweet")
+    plt.savefig('quote.png')
+
+amountquestion(train)
