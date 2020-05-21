@@ -70,7 +70,25 @@ train["len_text"]=train["text"].str.len()
 #print(train.loc[train["location2"].str.split().str.len()==3,"location2"].unique())
 #print("Less than 3 words")
 #print(train.loc[train["location2"].str.split().str.len()<3,"location2"].unique()[100:900])
+
+#New colum location-targ relation between location y target to plot 
+train.loc[train["location"].isnull(),"location-target"]=None
+bool_nul_targ=(train["target"]==1)&(train["location"].isnull())
+bool_nul_no_targ=(train["target"]==0)&(train["location"].isnull())
+train.loc[bool_nul_targ,"loc-targ"]="No location,Real Desaster"
+train.loc[bool_nul_no_targ,"loc-targ"]="No location,Not Real Desaster"
+bool_loc_targ=(train["target"]==1)&(train["location-target"])
+bool_loc_no_targ=(train["target"]==0)&(train["location-target"])
+train.loc[bool_loc_targ,"loc-targ"]="Real location,Real Desaster"
+train.loc[bool_loc_no_targ,"loc-targ"]="Real location,Not Real Desaster"
+bool_no_loc_targ=(train["target"]==1)&( train["location-target"]==False)
+bool_no_loc_no_targ=(train["target"]==0)&(train["location-target"]==False)
+train.loc[bool_no_loc_targ,"loc-targ"]="Unreal location,Real Desaster"
+train.loc[bool_no_loc_no_targ,"loc-targ"]="Unreal location,Not Real Desaster"
+
+
 def plotKeywords(train,real):
+    "real is the number: 1 or 0"
     tg = "real" if real==1 else "unreal"
     fig, ax = plt.subplots(figsize=(15,22))
     keyword_tg= train.loc[train["target"]==real,"keyword"].value_counts()
@@ -90,33 +108,42 @@ def plotKeywords(train,tg):
     ax.set_title("Top keywords for "+tg_label+" disaster Tweets", fontsize=20)
     ax.set_xlabel('Top ten keywords', fontsize=13)
     plt.savefig("topkeyword"+tg_label+"desastertweet.png")
-#example = train[["text","len_text","keyword","location2","target"]]
-#ax=sns.pairplot(example)
 
-
-train.loc[train["location"].isnull(),"location-target"]=None
-
-bool_nul_targ=(train["target"]==1)&(train["location"].isnull())
-bool_nul_no_targ=(train["target"]==0)&(train["location"].isnull())
-train.loc[bool_nul_targ,"loc-targ"]="No location,Real Desaster"
-train.loc[bool_nul_no_targ,"loc-targ"]="No location,Not Real Desaster"
-bool_loc_targ=(train["target"]==1)&(train["location-target"])
-bool_loc_no_targ=(train["target"]==0)&(train["location-target"])
-train.loc[bool_loc_targ,"loc-targ"]="Real location,Real Desaster"
-train.loc[bool_loc_no_targ,"loc-targ"]="Real location,Not Real Desaster"
-bool_no_loc_targ=(train["target"]==1)&( train["location-target"]==False)
-bool_no_loc_no_targ=(train["target"]==0)&(train["location-target"]==False)
-train.loc[bool_no_loc_targ,"loc-targ"]="Unreal location,Real Desaster"
-train.loc[bool_no_loc_no_targ,"loc-targ"]="Unreal location,Not Real Desaster"
 
 
 def plotpie(train):
     location=train["loc-targ"].value_counts()
     fig,ax=plt.subplots()
-    ax=location.plot.pie(figsize=(12, 7), fontsize=8)
+    ax=location.plot.pie(figsize=(12, 7), colors=['lightblue', 'tomato', 'royalblue',\
+         'r', 'b', 'crimson'],fontsize=8.75, autopct='%.2f')
     ax.set_ylabel('')
     ax.set_title("Real, unreal or no localition, for real or not real desaster", fontsize=16)
-    #ax.set_xlabel('', fontsize=13)
+    ax.set_xlabel('', fontsize=12)
     plt.savefig("pieLoc.png")
+  
 
-plotpie(train)
+def plotboxlen(train):
+    colors = ["deepskyblue", "red"]
+    fig, ax = plt.subplots()
+    plt.title('Amount of tweet characters that are about \n a real disaster or not'\
+            ,fontsize=12,fontweight='bold')
+    ax = sns.boxplot(x="target", y="len_text", 
+                        data=train, palette=colors)
+
+    ax.set_xticklabels(["Not Real Disaster","Real Disaster"])
+    ax.set_ylabel('Amount of tweet characters')
+    ax.set_xlabel("")
+    plt.savefig('lenvsRealorNot.png')
+
+def plotmissing(train):
+    fig,ax=plt.subplots()
+    datas =[["location", train["location"].isnull().sum() ],["keyword" ,\
+        train["keyword"].isnull().sum() ]] 
+    missing = pd.DataFrame(datas, index=['location', 'keyword'])
+    ax=missing.plot(kind="bar",rot=0,figsize=(6,4), \
+        color=["mediumorchid","green"],legend=False)
+    ax.set_title("Amount of missing values", fontsize=14)
+    ax.set_ylabel('Number')
+    ax.set_xlabel("Data")
+    plt.savefig('missing.png')
+
