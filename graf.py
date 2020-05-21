@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from itertools import cycle, islice
+import re
 
 train = pd.read_csv("train.csv")
 #cleaning the keywords
@@ -92,7 +93,7 @@ def plotKeywords(train,real):
     tg = "real" if real==1 else "unreal"
     fig, ax = plt.subplots(figsize=(15,22))
     keyword_tg= train.loc[train["target"]==real,"keyword"].value_counts()
-    ax = sns.barplot(x=keyword_tg.values, y=keyword_tg.index, orient='h',)
+    ax = sns.barplot(x=keyword_tg.values, y=keyword_tg.index, orient='h')
     ax.set_ylabel("Keyword", fontsize=18)
     ax.set_title("Keywords of "+tg+" disaster Tweets", fontsize=25)
     ax.set_xlabel("Amount of tweets", fontsize=20)
@@ -147,3 +148,49 @@ def plotmissing(train):
     ax.set_xlabel("Data")
     plt.savefig('missing.png')
 
+def amountquestion(train):
+    #para acomodar
+    train['question'] = train['text'].apply(lambda x: len(str(x).split("?"))-1 )
+    questions=train.loc[:,["target","question"]]
+    questions["value"]=[1]*len(questions["target"])
+    questions=questions.groupby(["question","target"]).agg("count")
+    #value of 0 amount of ? can be deleted because it is out of range
+    colors = ["deepskyblue", "red"]
+    fig, ax = plt.subplots()
+    questions.plot(kind='bar',figsize=(10,8),rot=25, color=colors)
+    plt.title('Amount of "?" in each tweet ',fontsize=12,fontweight='bold')
+    #ax = sns.barplot(x=questions["value"], y=questions_get_group("question"), hue=questions_get_group("target") , orient='h')
+    #ax = sns.boxplot(x="target", y="question", 
+                        #data=questions, palette=colors)
+
+    ax.set_xticklabels(["Not Real Disaster","Real Disaster"])
+    ax.set_ylabel('Amount of "?" in each tweet')
+    ax.set_xlabel("Aoumnt of time of that amount of ?")
+    plt.savefig('questions.png')
+
+def plotPersonalWords(train):
+    pattern = r"\bi\b|\bmine\b|\bwe\b|\bmy\b|\bour\b"
+    #(I , My, Our, me, we,  mine)
+    bool_personal=train["text"].str.contains(pattern, flags=re.I,na=False)
+    personal=train.loc[bool_personal,"target"].value_counts()
+    fig,ax=plt.subplots()
+    ax=personal.plot.pie(figsize=(6, 6), colors=['lightblue', 'crimson'],\
+        fontsize=8.75, autopct='%.2f',labels=["Unreal Desaster","Real Desaster"])
+    ax.set_title("Tweets with personals words", fontsize=12)
+    ax.set_ylabel("")
+    plt.savefig("piePersonal.png")
+
+def plotNotPersonalWords(train):
+    pattern = r"\bi\b|\bmine\b|\bwe\b|\bmy\b|\bour\b"
+    #(I , My, Our, me, we,  mine)
+    bool_personal=train["text"].str.contains(pattern, flags=re.I,na=False)
+    personal=train.loc[bool_personal==False,"target"].value_counts()
+    print(personal)
+    fig,ax=plt.subplots()
+    ax=personal.plot.pie(figsize=(6, 6), colors=['lightblue', 'crimson'],\
+        fontsize=8.75, autopct='%.2f',labels=["Unreal Desaster","Real Desaster"])
+    ax.set_title("Tweets without personals words", fontsize=12)
+    ax.set_ylabel("")
+    plt.savefig("pieNoPersonal.png")
+
+plotNotPersonalWords(train)
