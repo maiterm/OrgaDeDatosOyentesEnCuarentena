@@ -35,7 +35,6 @@ train.loc[bool_where,"location-target"]= False
 #print(train.loc[bool_where,"location"].str.contains("\d",na=False).sum())
 
 #location digit 
-
 bool_digit=train["location"].str.contains(r"[0-9]",na=False)
 train.loc[bool_digit,"location-target"]= False
 
@@ -51,8 +50,7 @@ train.loc[bool_words,"location-target"]= False
 #Some locations have a "," the place, and other bigger
 train.loc[train["location-target"],"location1"] = train["location"].str.split(",|-").str[-2]
 train.loc[train["location-target"],"location2"] = train["location"].str.split(",|-").str[-1]
-#print("more than 3 words in locations2")
-#print(train.loc[train["location2"].str.split().str.len()>3,"location2"].unique())
+
 
 #There are a lot new york city
 bool_ny=train["location2"].str.contains("New York",na=False)
@@ -87,6 +85,7 @@ bool_no_loc_no_targ=(train["target"]==0)&(train["location-target"]==False)
 train.loc[bool_no_loc_targ,"loc-targ"]="Unreal location,Real Desaster"
 train.loc[bool_no_loc_no_targ,"loc-targ"]="Unreal location,Not Real Desaster"
 
+train['question'] = train['text'].apply(lambda x: len(str(x).split("?"))-1 )
 
 def plotKeywords(train,real):
     "real is the number: 1 or 0"
@@ -149,19 +148,17 @@ def plotmissing(train):
     plt.savefig('missing.png')
 
 def amountquestion(train):
-    
-    train['question'] = train['text'].apply(lambda x: len(str(x).split("?"))-1 )
     # questions=train.loc[:,["target","question"]]
     # print(questions.unique())
     # questions["value"]=[1]*len(questions["target"])
     # questions=questions.groupby(["question","target"]).agg("count")
     colors = ["deepskyblue", "red"]
     fig, ax = plt.subplots()
-    verdaderos = train.loc[(train['target'] == 1)&(train["question"]!=0)]
-    falsos = train.loc[(train['target'] == 0)&(train["question"]!=0)]
+    truth = train.loc[(train['target'] == 1)&(train["question"]!=0)]
+    fake = train.loc[(train['target'] == 0)&(train["question"]!=0)]
     # tweets.['lenght'].plot.hist(color='blue', figsize=(12, 4), bins=100)
-    verdaderos['question'].plot.hist(color=colors[1], figsize=(12, 8), bins=50,alpha=1,label="Real Disaster")
-    falsos['question'].plot.hist(color=colors[0], figsize=(12, 8), bins=50, alpha=0.5,label="Not Real Disaster")
+    truth['question'].plot.hist(color=colors[1], figsize=(12, 8), bins=50,alpha=1,label="Real Disaster")
+    fake['question'].plot.hist(color=colors[0], figsize=(12, 8), bins=50, alpha=0.5,label="Not Real Disaster")
     plt.title('Amount of tweets with number of "?"',fontsize=12,fontweight='bold')
     plt.legend()
     #ax.set_ylim(0,30)
@@ -220,7 +217,6 @@ def containskeyword(train):
     plt.savefig("pieContain.png")
 
 def numberQueote(train):
-    
     train['quote'] = train['text'].apply(lambda x: len(str(x).split("@"))-1 )
     colors = ["deepskyblue", "red"]
     fig, ax = plt.subplots()
@@ -234,4 +230,12 @@ def numberQueote(train):
     ax.set_xlabel("Aoumnt @ in each tweet")
     plt.savefig('quote.png')
 
-amountquestion(train)
+def plotTargetquestion(train):
+    fig,ax=plt.subplots()
+    target=train.loc[train["question"]!=0,"target"].value_counts()
+    ax=target.plot.pie(figsize=(6, 6), colors=['lightblue', 'crimson'],\
+        fontsize=9, autopct='%.2f',labels=["Unreal Desaster","Real Desaster"])
+    ax.set_title("Tweets with questions", fontsize=12)
+    ax.set_ylabel("")
+    plt.savefig("piequestion.png")
+
